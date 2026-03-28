@@ -11,6 +11,7 @@ import {
   ArrowsLeftRight,
   ClipboardText,
   HardHat,
+  DeviceMobileCamera,
 } from '@phosphor-icons/react';
 
 const navItems = [
@@ -58,8 +59,19 @@ export default function Sidebar() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-slate-600">
-        <div className="flex items-center gap-3">
+      <div className="p-3 border-t border-slate-600">
+        <Link
+          href="/preview"
+          className={`flex items-center gap-3 px-4 py-3 rounded-lg mb-3 text-sm transition-colors ${
+            pathname === '/preview'
+              ? 'bg-purple-600 text-white font-medium'
+              : 'text-purple-300 hover:bg-purple-900/40 hover:text-white bg-purple-900/20 border border-purple-700/30'
+          }`}
+        >
+          <DeviceMobileCamera className="w-5 h-5" weight={pathname === '/preview' ? 'fill' : 'duotone'} />
+          Mobilní náhled
+        </Link>
+        <div className="flex items-center gap-3 px-1">
           <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
             DK
           </div>
