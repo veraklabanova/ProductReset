@@ -10,13 +10,13 @@ function AppShellInner({ children }: { children: React.ReactNode }) {
   const isEmbed = searchParams.get('embed') === '1';
   const isPreview = pathname === '/preview';
 
-  if (isEmbed || isPreview) {
+  if (isPreview) {
     return <main className="flex-1 overflow-auto">{children}</main>;
   }
 
   return (
     <>
-      <Sidebar />
+      <Sidebar embedMode={isEmbed} />
       <main className="flex-1 overflow-auto min-w-0">{children}</main>
     </>
   );
