@@ -30,37 +30,37 @@ export default function MigrationPage() {
   };
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900">Migrační průvodce</h1>
-        <p className="text-slate-500 mt-1">Automatizovaný převod z v1.0 na v2.0</p>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 lg:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900">Migrační průvodce</h1>
+        <p className="text-slate-500 mt-1 text-sm sm:text-base">Automatizovaný převod z v1.0 na v2.0</p>
       </div>
 
       {/* Kroky postupu */}
-      <div className="flex items-center mb-8 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
+      <div className="flex items-center mb-6 lg:mb-8 bg-white rounded-xl shadow-sm border border-slate-200 p-3 sm:p-4 overflow-x-auto">
         {steps.map((step, i) => (
-          <div key={step.id} className="flex items-center flex-1">
-            <div className={`flex items-center gap-3 ${currentStep >= step.id ? 'text-blue-600' : 'text-slate-400'}`}>
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
+          <div key={step.id} className="flex items-center flex-1 min-w-0">
+            <div className={`flex items-center gap-2 sm:gap-3 ${currentStep >= step.id ? 'text-blue-600' : 'text-slate-400'}`}>
+              <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-bold flex-shrink-0 ${
                 currentStep > step.id ? 'bg-emerald-500 text-white' :
                 currentStep === step.id ? 'bg-blue-600 text-white' :
                 'bg-slate-100 text-slate-400'
               }`}>
-                {currentStep > step.id ? <Check className="w-5 h-5" weight="bold" /> : step.id}
+                {currentStep > step.id ? <Check className="w-4 h-4 sm:w-5 sm:h-5" weight="bold" /> : step.id}
               </div>
-              <div>
-                <p className="text-sm font-medium">{step.label}</p>
+              <div className="hidden sm:block">
+                <p className="text-sm font-medium whitespace-nowrap">{step.label}</p>
               </div>
             </div>
             {i < steps.length - 1 && (
-              <div className={`flex-1 h-0.5 mx-4 ${currentStep > step.id ? 'bg-emerald-500' : 'bg-slate-200'}`} />
+              <div className={`flex-1 h-0.5 mx-2 sm:mx-4 min-w-[12px] ${currentStep > step.id ? 'bg-emerald-500' : 'bg-slate-200'}`} />
             )}
           </div>
         ))}
       </div>
 
       {/* Obsah kroků */}
-      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
+      <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 sm:p-6 lg:p-8">
         {/* Krok 1: Výběr šablony */}
         {currentStep === 1 && (
           <div>
@@ -99,13 +99,14 @@ export default function MigrationPage() {
           <div>
             <h2 className="text-xl font-semibold mb-2">Automatické mapování polí</h2>
             <p className="text-slate-500 mb-6">Systém automaticky namapoval pole z v1.0 na v2.0. Zkontrolujte mapování a odsouhlaste.</p>
-            <table className="w-full text-sm">
+            <div className="table-responsive">
+            <table className="w-full text-sm min-w-[500px]">
               <thead>
                 <tr className="border-b border-slate-200">
-                  <th className="text-left py-3 px-4 font-medium text-slate-500">Pole v1.0</th>
-                  <th className="text-center py-3 px-4 font-medium text-slate-500"></th>
-                  <th className="text-left py-3 px-4 font-medium text-slate-500">Pole v2.0</th>
-                  <th className="text-left py-3 px-4 font-medium text-slate-500">Status</th>
+                  <th className="text-left py-3 px-3 sm:px-4 font-medium text-slate-500">Pole v1.0</th>
+                  <th className="text-center py-3 px-2 font-medium text-slate-500"></th>
+                  <th className="text-left py-3 px-3 sm:px-4 font-medium text-slate-500">Pole v2.0</th>
+                  <th className="text-left py-3 px-3 sm:px-4 font-medium text-slate-500">Status</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,6 +133,7 @@ export default function MigrationPage() {
                 ))}
               </tbody>
             </table>
+            </div>
             <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
               {mappings.filter((m) => m.status === 'mapped').length} polí úspěšně namapováno,{' '}
               {mappings.filter((m) => m.status === 'conflict').length} konfliktů k řešení,{' '}
@@ -150,12 +152,12 @@ export default function MigrationPage() {
                 <div key={m.v1Field} className={`p-4 rounded-lg border-2 ${
                   conflictsResolved[m.v1Field] ? 'border-emerald-200 bg-emerald-50' : 'border-red-200 bg-red-50'
                 }`}>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <p className="font-medium text-slate-900">
-                        {m.v1Field} <ArrowRight className="w-4 h-4 inline text-slate-400" /> {m.v2Field}
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="font-medium text-slate-900 text-sm sm:text-base">
+                        <span className="font-mono text-xs sm:text-sm">{m.v1Field}</span> <ArrowRight className="w-3 h-3 sm:w-4 sm:h-4 inline text-slate-400" /> <span className="font-mono text-xs sm:text-sm">{m.v2Field}</span>
                       </p>
-                      <p className="text-sm text-slate-600 mt-1">{m.conflictReason}</p>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-1">{m.conflictReason}</p>
                     </div>
                     <button
                       onClick={() => setConflictsResolved((prev) => ({ ...prev, [m.v1Field]: !prev[m.v1Field] }))}

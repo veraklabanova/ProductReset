@@ -65,62 +65,60 @@ export default function HeatmapPage() {
   }, [weekOffset]);
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
-            <Fire className="w-8 h-8 text-orange-500" weight="duotone" />
-            Konfliktní heatmapa
-          </h1>
-          <p className="text-slate-500 mt-1">Vizuální přehled kapacit a konfliktů</p>
-        </div>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-4 sm:mb-6">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-2 sm:gap-3">
+          <Fire className="w-6 h-6 sm:w-8 sm:h-8 text-orange-500" weight="duotone" />
+          Konfliktní heatmapa
+        </h1>
+        <p className="text-slate-500 mt-1 text-sm">Vizuální přehled kapacit a konfliktů</p>
       </div>
 
       {/* Souhrn */}
-      <div className="flex gap-4 mb-6">
-        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2">
-          <div className="w-4 h-4 rounded bg-emerald-200" />
-          <span className="text-sm font-medium text-emerald-700">{summary.ok} OK</span>
+      <div className="flex flex-wrap gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-lg px-3 sm:px-4 py-2">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-emerald-200" />
+          <span className="text-xs sm:text-sm font-medium text-emerald-700">{summary.ok} OK</span>
         </div>
-        <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2">
-          <div className="w-4 h-4 rounded bg-amber-200" />
-          <span className="text-sm font-medium text-amber-700">{summary.warning} Zónové konflikty</span>
+        <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-3 sm:px-4 py-2">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-amber-200" />
+          <span className="text-xs sm:text-sm font-medium text-amber-700">{summary.warning} Zóny</span>
         </div>
-        <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
-          <div className="w-4 h-4 rounded bg-red-300" />
-          <span className="text-sm font-medium text-red-700">{summary.danger} Překapacity</span>
+        <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-3 sm:px-4 py-2">
+          <div className="w-3 h-3 sm:w-4 sm:h-4 rounded bg-red-300" />
+          <span className="text-xs sm:text-sm font-medium text-red-700">{summary.danger} Překapacity</span>
         </div>
       </div>
 
-      {/* Navigace po týdnech */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 p-1">
+      {/* Navigace */}
+      <div className="flex items-center gap-2 sm:gap-4 mb-4 sm:mb-6">
+        <div className="flex items-center gap-1 sm:gap-2 bg-white rounded-lg border border-slate-200 p-1 flex-1 sm:flex-none">
           <button onClick={() => setWeekOffset((o) => o - 1)} className="p-2 hover:bg-slate-100 rounded">
             <CaretLeft className="w-4 h-4" weight="bold" />
           </button>
-          <span className="text-sm font-medium px-3 min-w-[180px] text-center">
+          <span className="text-xs sm:text-sm font-medium px-1 sm:px-3 flex-1 sm:min-w-[180px] text-center whitespace-nowrap">
             {formatDate(weekDays[0])} – {formatDate(weekDays[4])}
           </span>
           <button onClick={() => setWeekOffset((o) => o + 1)} className="p-2 hover:bg-slate-100 rounded">
             <CaretRight className="w-4 h-4" weight="bold" />
           </button>
         </div>
-        <button onClick={() => setWeekOffset(0)} className="px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg">
+        <button onClick={() => setWeekOffset(0)} className="px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg whitespace-nowrap">
           Dnes
         </button>
       </div>
 
       {/* Heatmapa */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-auto">
-        <table className="w-full text-sm border-collapse">
+        <table className="w-full text-sm border-collapse min-w-[500px]">
           <thead>
             <tr className="bg-slate-50">
-              <th className="text-left py-3 px-4 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[160px] sticky left-0 bg-slate-50 z-10">
-                Pracovník
+              <th className="text-left py-2 sm:py-3 px-2 sm:px-4 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[100px] sm:min-w-[160px] sticky left-0 bg-slate-50 z-10">
+                <span className="text-xs sm:text-sm">Pracovník</span>
               </th>
               {weekDays.map((day) => (
-                <th key={day} className="text-center py-3 px-2 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[120px]">
-                  {formatDate(day)}
+                <th key={day} className="text-center py-2 sm:py-3 px-1 sm:px-2 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[60px] sm:min-w-[120px]">
+                  <span className="text-[10px] sm:text-sm">{formatDate(day)}</span>
                 </th>
               ))}
             </tr>
@@ -128,12 +126,12 @@ export default function HeatmapPage() {
           <tbody>
             {activeWorkers.map((worker) => (
               <tr key={worker.id}>
-                <td className="py-2 px-4 border-b border-r border-slate-200 sticky left-0 bg-white z-10">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-[10px] font-bold">
+                <td className="py-1.5 sm:py-2 px-2 sm:px-4 border-b border-r border-slate-200 sticky left-0 bg-white z-10">
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-[8px] sm:text-[10px] font-bold flex-shrink-0">
                       {worker.name.split(' ').map((n) => n[0]).join('')}
                     </div>
-                    <span className="text-xs font-medium text-slate-700">{worker.name}</span>
+                    <span className="text-[10px] sm:text-xs font-medium text-slate-700 truncate">{worker.name}</span>
                   </div>
                 </td>
                 {weekDays.map((day) => {
@@ -141,15 +139,14 @@ export default function HeatmapPage() {
                   return (
                     <td
                       key={day}
-                      className={`py-3 px-2 border-b border-r border-slate-200 text-center transition-colors ${statusColors[status]}`}
-                      title={status === 'empty' ? 'Bez přiřazení' :
-                        `${hours}h${zoneCount > 1 ? ` / ${zoneCount} zóny` : ''}`}
+                      className={`py-2 sm:py-3 px-1 sm:px-2 border-b border-r border-slate-200 text-center transition-colors ${statusColors[status]}`}
+                      title={status === 'empty' ? 'Bez přiřazení' : `${hours}h${zoneCount > 1 ? ` / ${zoneCount} zóny` : ''}`}
                     >
-                      <span className={`text-sm font-mono ${statusTextColors[status]}`}>
+                      <span className={`text-xs sm:text-sm font-mono ${statusTextColors[status]}`}>
                         {status === 'empty' ? '–' : `${hours}h`}
                       </span>
                       {zoneCount > 1 && (
-                        <div className="text-[10px] text-amber-600 mt-0.5">{zoneCount} zóny</div>
+                        <div className="text-[8px] sm:text-[10px] text-amber-600 mt-0.5">{zoneCount}z</div>
                       )}
                     </td>
                   );

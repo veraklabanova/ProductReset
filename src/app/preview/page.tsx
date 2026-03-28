@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import {
   SquaresFour,
   Users,
@@ -12,6 +13,7 @@ import {
   DeviceMobileCamera,
   Desktop,
   ArrowsOut,
+  ArrowLeft,
   BatteryFull,
   WifiHigh,
   CellSignalFull,
@@ -51,14 +53,23 @@ export default function PreviewPage() {
     <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 ${isFullscreen ? 'fixed inset-0 z-50' : ''}`}>
       {/* Horní panel */}
       <div className="border-b border-slate-700/50 bg-slate-900/80 backdrop-blur-sm sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-xl font-bold text-white flex items-center gap-2">
-                <DeviceMobileCamera className="w-6 h-6 text-blue-400" weight="duotone" />
-                Mobilní náhled
-              </h1>
-              <p className="text-sm text-slate-400 mt-0.5">Interaktivní prezentace CCM v2.0 na mobilních zařízeních</p>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-3 sm:py-4">
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3 min-w-0">
+              <Link
+                href="/"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-slate-300 hover:text-white hover:bg-slate-700 rounded-lg transition-colors flex-shrink-0"
+              >
+                <ArrowLeft className="w-4 h-4" weight="bold" />
+                <span className="hidden sm:inline">Zpět</span>
+              </Link>
+              <div className="min-w-0">
+                <h1 className="text-base sm:text-xl font-bold text-white flex items-center gap-2">
+                  <DeviceMobileCamera className="w-5 h-5 sm:w-6 sm:h-6 text-blue-400 flex-shrink-0" weight="duotone" />
+                  <span className="truncate">Mobilní náhled</span>
+                </h1>
+                <p className="text-xs sm:text-sm text-slate-400 mt-0.5 hidden sm:block">Interaktivní prezentace CCM v2.0</p>
+              </div>
             </div>
 
             {/* Přepínač zařízení */}

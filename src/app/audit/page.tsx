@@ -28,20 +28,18 @@ export default function AuditPage() {
   });
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
-            <ClipboardText className="w-8 h-8 text-slate-600" weight="duotone" />
-            Audit Log
-          </h1>
-          <p className="text-slate-500 mt-1">Historie všech akcí a přepisů pravidel</p>
-        </div>
+    <div className="p-4 sm:p-6 lg:p-8">
+      <div className="mb-6 lg:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 flex items-center gap-2 sm:gap-3">
+          <ClipboardText className="w-6 h-6 sm:w-8 sm:h-8 text-slate-600" weight="duotone" />
+          Audit Log
+        </h1>
+        <p className="text-slate-500 mt-1 text-sm">Historie všech akcí a přepisů pravidel</p>
       </div>
 
       {/* Filtry */}
-      <div className="flex gap-4 mb-6">
-        <div className="relative flex-1 max-w-sm">
+      <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-6">
+        <div className="relative flex-1">
           <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
