@@ -1,18 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { auditLog } from '@/lib/data';
-import { workers, projects } from '@/lib/data';
-import { ClipboardList, Search, AlertTriangle, Clock, Shield, UserPlus, FolderPlus, ArrowRightLeft, MapPin } from 'lucide-react';
+import { auditLog, workers, projects } from '@/lib/data';
+import { ClipboardText, MagnifyingGlass, Warning, Clock, ShieldCheck, UserPlus, FolderPlus, ArrowsLeftRight, MapPin } from '@phosphor-icons/react';
 
 const actionLabels: Record<string, { label: string; color: string; icon: typeof Clock }> = {
-  allocation_created: { label: 'Prirazeni', color: 'bg-blue-100 text-blue-700', icon: Clock },
-  overcapacity_blocked: { label: 'Prekapacita', color: 'bg-red-100 text-red-700', icon: AlertTriangle },
-  zone_warning: { label: 'Zonovy konflikt', color: 'bg-amber-100 text-amber-700', icon: MapPin },
-  override_applied: { label: 'Override', color: 'bg-purple-100 text-purple-700', icon: Shield },
-  project_created: { label: 'Novy projekt', color: 'bg-emerald-100 text-emerald-700', icon: FolderPlus },
+  allocation_created: { label: 'Přiřazení', color: 'bg-blue-100 text-blue-700', icon: Clock },
+  overcapacity_blocked: { label: 'Překapacita', color: 'bg-red-100 text-red-700', icon: Warning },
+  zone_warning: { label: 'Zónový konflikt', color: 'bg-amber-100 text-amber-700', icon: MapPin },
+  override_applied: { label: 'Přepis (override)', color: 'bg-purple-100 text-purple-700', icon: ShieldCheck },
+  project_created: { label: 'Nový projekt', color: 'bg-emerald-100 text-emerald-700', icon: FolderPlus },
   worker_deactivated: { label: 'Deaktivace', color: 'bg-slate-100 text-slate-700', icon: UserPlus },
-  bulk_move: { label: 'Hromadny presun', color: 'bg-indigo-100 text-indigo-700', icon: ArrowRightLeft },
+  bulk_move: { label: 'Hromadný přesun', color: 'bg-indigo-100 text-indigo-700', icon: ArrowsLeftRight },
 };
 
 export default function AuditPage() {
@@ -33,20 +32,20 @@ export default function AuditPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
-            <ClipboardList className="w-8 h-8 text-slate-600" />
+            <ClipboardText className="w-8 h-8 text-slate-600" weight="duotone" />
             Audit Log
           </h1>
-          <p className="text-slate-500 mt-1">Historie vsech akci a prepisu pravidel</p>
+          <p className="text-slate-500 mt-1">Historie všech akcí a přepisů pravidel</p>
         </div>
       </div>
 
-      {/* Filters */}
+      {/* Filtry */}
       <div className="flex gap-4 mb-6">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder="Hledat v logu..."
+            placeholder="Hledat v logu…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -57,14 +56,14 @@ export default function AuditPage() {
           onChange={(e) => setFilterAction(e.target.value)}
           className="px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">Vsechny akce</option>
+          <option value="all">Všechny akce</option>
           {Object.entries(actionLabels).map(([key, val]) => (
             <option key={key} value={key}>{val.label}</option>
           ))}
         </select>
       </div>
 
-      {/* Log entries */}
+      {/* Záznamy logu */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200">
         <div className="divide-y divide-slate-100">
           {filtered.map((entry) => {
@@ -77,7 +76,7 @@ export default function AuditPage() {
               <div key={entry.id} className="p-4 hover:bg-slate-50 transition-colors">
                 <div className="flex items-start gap-4">
                   <div className={`p-2 rounded-lg ${actionInfo.color}`}>
-                    <Icon className="w-4 h-4" />
+                    <Icon className="w-4 h-4" weight="duotone" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
@@ -90,8 +89,8 @@ export default function AuditPage() {
                     </div>
                     <p className="text-sm text-slate-900">{entry.details}</p>
                     <div className="flex items-center gap-4 mt-1.5 text-xs text-slate-400">
-                      <span>Uzivatel: {entry.user}</span>
-                      {worker && <span>Pracovnik: {worker.name}</span>}
+                      <span>Uživatel: {entry.user}</span>
+                      {worker && <span>Pracovník: {worker.name}</span>}
                       {project && <span>Projekt: {project.name}</span>}
                     </div>
                   </div>

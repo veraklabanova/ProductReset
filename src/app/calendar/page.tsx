@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { workers, projects, allocations as initialAllocations, zones } from '@/lib/data';
 import { Allocation, SLOT_LABELS, SLOT_HOURS, TimeSlot } from '@/lib/types';
 import { getWorkerHoursOnDate, getWorkerZonesOnDate, formatDate, validateAllocation } from '@/lib/validation';
-import { ChevronLeft, ChevronRight, AlertTriangle, Clock, MapPin, Plus, X, Shield } from 'lucide-react';
+import { CaretLeft, CaretRight, Warning, Clock, MapPin, Plus, X, ShieldCheck } from '@phosphor-icons/react';
 
 export default function CalendarPage() {
   const [allocs, setAllocs] = useState<Allocation[]>(initialAllocations);
@@ -59,22 +59,22 @@ export default function CalendarPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Kalendar prirazeni</h1>
-          <p className="text-slate-500 mt-1">Tydenni prehled alokace pracovniku</p>
+          <h1 className="text-3xl font-bold text-slate-900">Kalendář přiřazení</h1>
+          <p className="text-slate-500 mt-1">Týdenní přehled alokace pracovníků</p>
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Ovládání */}
       <div className="flex items-center gap-4 mb-6">
         <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 p-1">
           <button onClick={() => setWeekOffset((o) => o - 1)} className="p-2 hover:bg-slate-100 rounded">
-            <ChevronLeft className="w-4 h-4" />
+            <CaretLeft className="w-4 h-4" weight="bold" />
           </button>
           <span className="text-sm font-medium px-3 min-w-[180px] text-center">
-            {formatDate(weekDays[0])} - {formatDate(weekDays[4])}
+            {formatDate(weekDays[0])} – {formatDate(weekDays[4])}
           </span>
           <button onClick={() => setWeekOffset((o) => o + 1)} className="p-2 hover:bg-slate-100 rounded">
-            <ChevronRight className="w-4 h-4" />
+            <CaretRight className="w-4 h-4" weight="bold" />
           </button>
         </div>
         <button onClick={() => setWeekOffset(0)} className="px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg">
@@ -85,28 +85,28 @@ export default function CalendarPage() {
           onChange={(e) => setSelectedWorker(e.target.value)}
           className="px-4 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">Vsichni pracovnici</option>
+          <option value="all">Všichni pracovníci</option>
           {activeWorkers.map((w) => (
             <option key={w.id} value={w.id}>{w.name}</option>
           ))}
         </select>
       </div>
 
-      {/* Legend */}
+      {/* Legenda */}
       <div className="flex gap-4 mb-4 text-xs">
-        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-blue-100 border border-blue-300" /> Normalni</span>
-        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-100 border border-red-300" /> Prekroceni 16h</span>
-        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-amber-100 border border-amber-300" /> Zonovy konflikt</span>
-        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-purple-100 border border-purple-300" /> Override</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-blue-100 border border-blue-300" /> Normální</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-red-100 border border-red-300" /> Překročení 16h</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-amber-100 border border-amber-300" /> Zónový konflikt</span>
+        <span className="flex items-center gap-1.5"><span className="w-3 h-3 rounded bg-purple-100 border border-purple-300" /> Přepis (override)</span>
       </div>
 
-      {/* Calendar Grid */}
+      {/* Kalendářní mřížka */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-auto">
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="bg-slate-50">
               <th className="text-left py-3 px-4 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[160px] sticky left-0 bg-slate-50 z-10">
-                Pracovnik
+                Pracovník
               </th>
               {weekDays.map((day) => (
                 <th key={day} className="text-center py-3 px-2 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[180px]">
@@ -143,7 +143,6 @@ export default function CalendarPage() {
                       <div className="space-y-1">
                         {dayAllocs.map((a) => {
                           const project = projects.find((p) => p.id === a.projectId);
-                          const zone = zones.find((z) => z.id === project?.zone);
                           return (
                             <div
                               key={a.id}
@@ -159,28 +158,27 @@ export default function CalendarPage() {
                             >
                               <div className="flex items-center justify-between">
                                 <span className="font-medium truncate">{project?.name}</span>
-                                {a.override && <Shield className="w-3 h-3 text-purple-500 flex-shrink-0" />}
+                                {a.override && <ShieldCheck className="w-3 h-3 text-purple-500 flex-shrink-0" weight="fill" />}
                               </div>
                               <span className="text-[10px] opacity-70">{SLOT_LABELS[a.slot]}</span>
                             </div>
                           );
                         })}
-                        {/* Status bar */}
                         {dayAllocs.length > 0 && (
                           <div className="flex items-center gap-1 text-[10px] mt-1">
                             <Clock className="w-3 h-3 text-slate-400" />
                             <span className={totalHours > 16 ? 'text-red-600 font-bold' : 'text-slate-400'}>
                               {totalHours}h / 16h
                             </span>
-                            {hasOvercapacity && <AlertTriangle className="w-3 h-3 text-red-500" />}
-                            {hasZoneConflict && <MapPin className="w-3 h-3 text-amber-500" />}
+                            {hasOvercapacity && <Warning className="w-3 h-3 text-red-500" weight="fill" />}
+                            {hasZoneConflict && <MapPin className="w-3 h-3 text-amber-500" weight="fill" />}
                           </div>
                         )}
                         <button
                           onClick={() => { setShowAddModal({ workerId: worker.id, date: day }); setAddError(null); }}
                           className="w-full py-0.5 text-[10px] text-slate-300 hover:text-blue-500 hover:bg-blue-50 rounded flex items-center justify-center gap-1"
                         >
-                          <Plus className="w-3 h-3" /> Pridat
+                          <Plus className="w-3 h-3" /> Přidat
                         </button>
                       </div>
                     </td>
@@ -192,19 +190,19 @@ export default function CalendarPage() {
         </table>
       </div>
 
-      {/* Add Allocation Modal */}
+      {/* Modální okno pro přidání alokace */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-semibold">Pridat prirazeni</h3>
+              <h3 className="text-lg font-semibold">Přidat přiřazení</h3>
               <button onClick={() => setShowAddModal(null)} className="p-1 hover:bg-slate-100 rounded">
                 <X className="w-5 h-5" />
               </button>
             </div>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Pracovnik</label>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Pracovník</label>
                 <p className="text-sm text-slate-600">{workers.find((w) => w.id === showAddModal.workerId)?.name}</p>
               </div>
               <div>
@@ -237,7 +235,7 @@ export default function CalendarPage() {
               </div>
               {addError && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+                  <Warning className="w-4 h-4 flex-shrink-0" weight="fill" />
                   {addError}
                 </div>
               )}
@@ -245,7 +243,7 @@ export default function CalendarPage() {
                 onClick={handleAddAllocation}
                 className="w-full py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium"
               >
-                Pridat prirazeni
+                Přidat přiřazení
               </button>
             </div>
           </div>

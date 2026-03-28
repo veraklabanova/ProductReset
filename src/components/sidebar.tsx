@@ -3,24 +3,24 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard,
+  SquaresFour,
   Users,
-  FolderKanban,
-  Calendar,
-  Flame,
-  ArrowRightLeft,
-  ClipboardList,
+  Buildings,
+  CalendarBlank,
+  Fire,
+  ArrowsLeftRight,
+  ClipboardText,
   HardHat,
-} from 'lucide-react';
+} from '@phosphor-icons/react';
 
 const navItems = [
-  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/workers', label: 'Pracovnici', icon: Users },
-  { href: '/projects', label: 'Projekty', icon: FolderKanban },
-  { href: '/calendar', label: 'Kalendar', icon: Calendar },
-  { href: '/heatmap', label: 'Heatmapa', icon: Flame },
-  { href: '/migration', label: 'Migrace', icon: ArrowRightLeft },
-  { href: '/audit', label: 'Audit Log', icon: ClipboardList },
+  { href: '/', label: 'Dashboard', icon: SquaresFour },
+  { href: '/workers', label: 'Pracovníci', icon: Users },
+  { href: '/projects', label: 'Projekty', icon: Buildings },
+  { href: '/calendar', label: 'Kalendář', icon: CalendarBlank },
+  { href: '/heatmap', label: 'Heatmapa', icon: Fire },
+  { href: '/migration', label: 'Migrace', icon: ArrowsLeftRight },
+  { href: '/audit', label: 'Audit Log', icon: ClipboardText },
 ];
 
 export default function Sidebar() {
@@ -30,7 +30,7 @@ export default function Sidebar() {
     <aside className="w-64 min-h-screen bg-[#1e293b] text-[#e2e8f0] flex flex-col flex-shrink-0">
       <div className="p-5 border-b border-slate-600">
         <div className="flex items-center gap-3">
-          <HardHat className="w-8 h-8 text-blue-400" />
+          <HardHat className="w-8 h-8 text-blue-400" weight="duotone" />
           <div>
             <h1 className="text-lg font-bold text-white">CCM v2.0</h1>
             <p className="text-xs text-slate-400">Capacity Manager</p>
@@ -51,7 +51,7 @@ export default function Sidebar() {
                   : 'text-slate-300 hover:bg-slate-700 hover:text-white'
               }`}
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-5 h-5" weight={isActive ? 'fill' : 'regular'} />
               {item.label}
             </Link>
           );
@@ -64,8 +64,8 @@ export default function Sidebar() {
             DK
           </div>
           <div>
-            <p className="text-sm font-medium text-white">Dispatcher Kovar</p>
-            <p className="text-xs text-slate-400">Kapacitni manazer</p>
+            <p className="text-sm font-medium text-white">Dispečer Kovář</p>
+            <p className="text-xs text-slate-400">Kapacitní manažer</p>
           </div>
         </div>
       </div>

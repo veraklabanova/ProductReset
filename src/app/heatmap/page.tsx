@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { workers, allocations, projects, zones } from '@/lib/data';
+import { workers, allocations } from '@/lib/data';
 import { getWorkerHoursOnDate, getWorkerZonesOnDate, formatDate } from '@/lib/validation';
-import { ChevronLeft, ChevronRight, Flame } from 'lucide-react';
+import { CaretLeft, CaretRight, Fire } from '@phosphor-icons/react';
 
 export default function HeatmapPage() {
   const [weekOffset, setWeekOffset] = useState(0);
@@ -51,7 +51,6 @@ export default function HeatmapPage() {
     danger: 'text-red-900 font-bold',
   };
 
-  // Summary counts
   const summary = useMemo(() => {
     let ok = 0, warning = 0, danger = 0;
     for (const w of activeWorkers) {
@@ -70,14 +69,14 @@ export default function HeatmapPage() {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-3xl font-bold text-slate-900 flex items-center gap-3">
-            <Flame className="w-8 h-8 text-orange-500" />
-            Konfliktni heatmapa
+            <Fire className="w-8 h-8 text-orange-500" weight="duotone" />
+            Konfliktní heatmapa
           </h1>
-          <p className="text-slate-500 mt-1">Vizualni prehled kapacit a konfliktu</p>
+          <p className="text-slate-500 mt-1">Vizuální přehled kapacit a konfliktů</p>
         </div>
       </div>
 
-      {/* Summary */}
+      {/* Souhrn */}
       <div className="flex gap-4 mb-6">
         <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-2">
           <div className="w-4 h-4 rounded bg-emerald-200" />
@@ -85,25 +84,25 @@ export default function HeatmapPage() {
         </div>
         <div className="flex items-center gap-2 bg-amber-50 border border-amber-200 rounded-lg px-4 py-2">
           <div className="w-4 h-4 rounded bg-amber-200" />
-          <span className="text-sm font-medium text-amber-700">{summary.warning} Zonove konflikty</span>
+          <span className="text-sm font-medium text-amber-700">{summary.warning} Zónové konflikty</span>
         </div>
         <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-2">
           <div className="w-4 h-4 rounded bg-red-300" />
-          <span className="text-sm font-medium text-red-700">{summary.danger} Prekapacity</span>
+          <span className="text-sm font-medium text-red-700">{summary.danger} Překapacity</span>
         </div>
       </div>
 
-      {/* Week navigation */}
+      {/* Navigace po týdnech */}
       <div className="flex items-center gap-4 mb-6">
         <div className="flex items-center gap-2 bg-white rounded-lg border border-slate-200 p-1">
           <button onClick={() => setWeekOffset((o) => o - 1)} className="p-2 hover:bg-slate-100 rounded">
-            <ChevronLeft className="w-4 h-4" />
+            <CaretLeft className="w-4 h-4" weight="bold" />
           </button>
           <span className="text-sm font-medium px-3 min-w-[180px] text-center">
-            {formatDate(weekDays[0])} - {formatDate(weekDays[4])}
+            {formatDate(weekDays[0])} – {formatDate(weekDays[4])}
           </span>
           <button onClick={() => setWeekOffset((o) => o + 1)} className="p-2 hover:bg-slate-100 rounded">
-            <ChevronRight className="w-4 h-4" />
+            <CaretRight className="w-4 h-4" weight="bold" />
           </button>
         </div>
         <button onClick={() => setWeekOffset(0)} className="px-3 py-2 text-sm text-blue-600 hover:bg-blue-50 rounded-lg">
@@ -111,13 +110,13 @@ export default function HeatmapPage() {
         </button>
       </div>
 
-      {/* Heatmap Grid */}
+      {/* Heatmapa */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-auto">
         <table className="w-full text-sm border-collapse">
           <thead>
             <tr className="bg-slate-50">
               <th className="text-left py-3 px-4 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[160px] sticky left-0 bg-slate-50 z-10">
-                Pracovnik
+                Pracovník
               </th>
               {weekDays.map((day) => (
                 <th key={day} className="text-center py-3 px-2 font-medium text-slate-500 border-b border-r border-slate-200 min-w-[120px]">
@@ -143,14 +142,14 @@ export default function HeatmapPage() {
                     <td
                       key={day}
                       className={`py-3 px-2 border-b border-r border-slate-200 text-center transition-colors ${statusColors[status]}`}
-                      title={status === 'empty' ? 'Bez prirazeni' :
-                        `${hours}h${zoneCount > 1 ? ` / ${zoneCount} zony` : ''}`}
+                      title={status === 'empty' ? 'Bez přiřazení' :
+                        `${hours}h${zoneCount > 1 ? ` / ${zoneCount} zóny` : ''}`}
                     >
                       <span className={`text-sm font-mono ${statusTextColors[status]}`}>
-                        {status === 'empty' ? '-' : `${hours}h`}
+                        {status === 'empty' ? '–' : `${hours}h`}
                       </span>
                       {zoneCount > 1 && (
-                        <div className="text-[10px] text-amber-600 mt-0.5">{zoneCount} zony</div>
+                        <div className="text-[10px] text-amber-600 mt-0.5">{zoneCount} zóny</div>
                       )}
                     </td>
                   );

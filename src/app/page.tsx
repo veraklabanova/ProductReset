@@ -2,7 +2,14 @@
 
 import { workers, projects, allocations, zones } from '@/lib/data';
 import { detectConflicts } from '@/lib/validation';
-import { Users, FolderKanban, AlertTriangle, CheckCircle, Clock, MapPin } from 'lucide-react';
+import {
+  Users,
+  Buildings,
+  Warning,
+  CheckCircle,
+  Clock,
+  MapPin,
+} from '@phosphor-icons/react';
 import Link from 'next/link';
 
 export default function Dashboard() {
@@ -13,17 +20,17 @@ export default function Dashboard() {
   const activeProjects = projects.filter((p) => p.status === 'active');
 
   const stats = [
-    { label: 'Aktivni pracovnici', value: activeWorkers.length, total: workers.length, icon: Users, color: 'bg-blue-500', href: '/workers' },
-    { label: 'Aktivni projekty', value: activeProjects.length, total: projects.length, icon: FolderKanban, color: 'bg-emerald-500', href: '/projects' },
-    { label: 'Prekapacitni konflikty', value: overcapacity.length, icon: AlertTriangle, color: 'bg-red-500', href: '/heatmap' },
-    { label: 'Zonove konflikty', value: zoneConflicts.length, icon: MapPin, color: 'bg-amber-500', href: '/heatmap' },
+    { label: 'Aktivní pracovníci', value: activeWorkers.length, total: workers.length, icon: Users, color: 'bg-blue-500', href: '/workers' },
+    { label: 'Aktivní projekty', value: activeProjects.length, total: projects.length, icon: Buildings, color: 'bg-emerald-500', href: '/projects' },
+    { label: 'Překapacitní konflikty', value: overcapacity.length, icon: Warning, color: 'bg-red-500', href: '/heatmap' },
+    { label: 'Zónové konflikty', value: zoneConflicts.length, icon: MapPin, color: 'bg-amber-500', href: '/heatmap' },
   ];
 
   return (
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-slate-500 mt-1">Construction Capacity Manager v2.0 - Prehled systemu</p>
+        <p className="text-slate-500 mt-1">Construction Capacity Manager v2.0 – Přehled systému</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
@@ -31,7 +38,7 @@ export default function Dashboard() {
           <Link key={stat.label} href={stat.href} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-4">
               <div className={`${stat.color} p-3 rounded-lg`}>
-                <stat.icon className="w-6 h-6 text-white" />
+                <stat.icon className="w-6 h-6 text-white" weight="duotone" />
               </div>
               {stat.total && (
                 <span className="text-sm text-slate-400">/ {stat.total}</span>
@@ -46,13 +53,13 @@ export default function Dashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
-            Aktivni konflikty
+            <Warning className="w-5 h-5 text-red-500" weight="duotone" />
+            Aktivní konflikty
           </h2>
           {conflicts.length === 0 ? (
             <div className="flex items-center gap-2 text-emerald-600 py-4">
-              <CheckCircle className="w-5 h-5" />
-              <span>Zadne konflikty</span>
+              <CheckCircle className="w-5 h-5" weight="duotone" />
+              <span>Žádné konflikty</span>
             </div>
           ) : (
             <div className="space-y-3">
@@ -67,12 +74,12 @@ export default function Dashboard() {
                 >
                   <div className="flex items-center gap-2">
                     {conflict.type === 'overcapacity' ? (
-                      <Clock className="w-4 h-4 text-red-500" />
+                      <Clock className="w-4 h-4 text-red-500" weight="bold" />
                     ) : (
-                      <MapPin className="w-4 h-4 text-amber-500" />
+                      <MapPin className="w-4 h-4 text-amber-500" weight="bold" />
                     )}
                     <span className="text-sm font-medium text-slate-700">
-                      {conflict.type === 'overcapacity' ? 'Prekroceni 16h' : 'Zonovy konflikt'}
+                      {conflict.type === 'overcapacity' ? 'Překročení 16h' : 'Zónový konflikt'}
                     </span>
                     <span className="text-xs text-slate-400 ml-auto">{conflict.date}</span>
                   </div>
@@ -85,8 +92,8 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
           <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-blue-500" />
-            Prehled zon
+            <MapPin className="w-5 h-5 text-blue-500" weight="duotone" />
+            Přehled zón
           </h2>
           <div className="space-y-4">
             {zones.map((zone) => {
@@ -100,8 +107,8 @@ export default function Dashboard() {
                     <span className="text-xs text-slate-400">{zone.region}</span>
                   </div>
                   <div className="flex gap-6 text-sm text-slate-500">
-                    <span>{zoneWorkers.length} pracovniku</span>
-                    <span>{zoneProjects.length} projektu</span>
+                    <span>{zoneWorkers.length} pracovníků</span>
+                    <span>{zoneProjects.length} projektů</span>
                   </div>
                 </div>
               );
@@ -111,8 +118,8 @@ export default function Dashboard() {
 
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 lg:col-span-2">
           <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
-            <FolderKanban className="w-5 h-5 text-emerald-500" />
-            Aktivni projekty
+            <Buildings className="w-5 h-5 text-emerald-500" weight="duotone" />
+            Aktivní projekty
           </h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -120,9 +127,9 @@ export default function Dashboard() {
                 <tr className="border-b border-slate-200">
                   <th className="text-left py-3 px-4 font-medium text-slate-500">Projekt</th>
                   <th className="text-left py-3 px-4 font-medium text-slate-500">Klient</th>
-                  <th className="text-left py-3 px-4 font-medium text-slate-500">Zona</th>
+                  <th className="text-left py-3 px-4 font-medium text-slate-500">Zóna</th>
                   <th className="text-left py-3 px-4 font-medium text-slate-500">Status</th>
-                  <th className="text-left py-3 px-4 font-medium text-slate-500">Obdobi</th>
+                  <th className="text-left py-3 px-4 font-medium text-slate-500">Období</th>
                 </tr>
               </thead>
               <tbody>
@@ -144,11 +151,11 @@ export default function Dashboard() {
                           p.status === 'planned' ? 'bg-blue-100 text-blue-700' :
                           'bg-slate-100 text-slate-700'
                         }`}>
-                          {p.status === 'active' ? 'Aktivni' : p.status === 'planned' ? 'Planovany' : 'Dokonceny'}
+                          {p.status === 'active' ? 'Aktivní' : p.status === 'planned' ? 'Plánovaný' : 'Dokončený'}
                         </span>
                       </td>
                       <td className="py-3 px-4 text-slate-500 text-xs">
-                        {new Date(p.startDate).toLocaleDateString('cs-CZ')} - {new Date(p.endDate).toLocaleDateString('cs-CZ')}
+                        {new Date(p.startDate).toLocaleDateString('cs-CZ')} – {new Date(p.endDate).toLocaleDateString('cs-CZ')}
                       </td>
                     </tr>
                   );

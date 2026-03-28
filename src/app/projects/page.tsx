@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { projects as initialProjects, zones, workers, allocations } from '@/lib/data';
 import { TEMPLATE_LABELS } from '@/lib/types';
-import { FolderKanban, Search, Users, Calendar } from 'lucide-react';
+import { Buildings, MagnifyingGlass, Users, CalendarBlank } from '@phosphor-icons/react';
 
 export default function ProjectsPage() {
   const [search, setSearch] = useState('');
@@ -21,16 +21,16 @@ export default function ProjectsPage() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h1 className="text-3xl font-bold text-slate-900">Projekty</h1>
-          <p className="text-slate-500 mt-1">{filtered.length} projektu</p>
+          <p className="text-slate-500 mt-1">{filtered.length} projektů</p>
         </div>
       </div>
 
       <div className="flex gap-4 mb-6">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder="Hledat projekt nebo klienta..."
+            placeholder="Hledat projekt nebo klienta…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -41,10 +41,10 @@ export default function ProjectsPage() {
           onChange={(e) => setFilterStatus(e.target.value)}
           className="px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">Vsechny statusy</option>
-          <option value="active">Aktivni</option>
-          <option value="planned">Planovane</option>
-          <option value="completed">Dokoncene</option>
+          <option value="all">Všechny statusy</option>
+          <option value="active">Aktivní</option>
+          <option value="planned">Plánované</option>
+          <option value="completed">Dokončené</option>
         </select>
       </div>
 
@@ -65,7 +65,7 @@ export default function ProjectsPage() {
                   p.status === 'planned' ? 'bg-blue-100 text-blue-700' :
                   'bg-slate-100 text-slate-700'
                 }`}>
-                  {p.status === 'active' ? 'Aktivni' : p.status === 'planned' ? 'Planovany' : 'Dokonceny'}
+                  {p.status === 'active' ? 'Aktivní' : p.status === 'planned' ? 'Plánovaný' : 'Dokončený'}
                 </span>
               </div>
 
@@ -75,15 +75,15 @@ export default function ProjectsPage() {
                   <span>{zone?.name} ({zone?.region})</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
-                  <Calendar className="w-4 h-4 text-slate-400" />
-                  <span>{new Date(p.startDate).toLocaleDateString('cs-CZ')} - {new Date(p.endDate).toLocaleDateString('cs-CZ')}</span>
+                  <CalendarBlank className="w-4 h-4 text-slate-400" />
+                  <span>{new Date(p.startDate).toLocaleDateString('cs-CZ')} – {new Date(p.endDate).toLocaleDateString('cs-CZ')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
                   <Users className="w-4 h-4 text-slate-400" />
-                  <span>{uniqueWorkers.size} prirzenych pracovniku</span>
+                  <span>{uniqueWorkers.size} přiřazených pracovníků</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-600">
-                  <FolderKanban className="w-4 h-4 text-slate-400" />
+                  <Buildings className="w-4 h-4 text-slate-400" />
                   <span className="text-xs">{TEMPLATE_LABELS[p.template]}</span>
                 </div>
               </div>

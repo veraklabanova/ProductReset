@@ -3,14 +3,12 @@
 import { useState } from 'react';
 import { workers as initialWorkers, zones } from '@/lib/data';
 import { TEMPLATE_LABELS, Worker } from '@/lib/types';
-import { Users, Search, Plus, Edit2, Trash2, CheckCircle, XCircle } from 'lucide-react';
+import { MagnifyingGlass, Plus, Trash, CheckCircle, XCircle } from '@phosphor-icons/react';
 
 export default function WorkersPage() {
   const [workerList, setWorkerList] = useState<Worker[]>(initialWorkers);
   const [search, setSearch] = useState('');
   const [filterZone, setFilterZone] = useState('all');
-  const [showAdd, setShowAdd] = useState(false);
-  const [editId, setEditId] = useState<string | null>(null);
 
   const filtered = workerList.filter((w) => {
     const matchSearch = w.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -33,25 +31,22 @@ export default function WorkersPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-slate-900">Pracovnici</h1>
-          <p className="text-slate-500 mt-1">{filtered.length} pracovniku nalezeno</p>
+          <h1 className="text-3xl font-bold text-slate-900">Pracovníci</h1>
+          <p className="text-slate-500 mt-1">{filtered.length} pracovníků nalezeno</p>
         </div>
-        <button
-          onClick={() => setShowAdd(!showAdd)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
-        >
-          <Plus className="w-4 h-4" />
-          Pridat pracovnika
+        <button className="flex items-center gap-2 px-4 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium">
+          <Plus className="w-4 h-4" weight="bold" />
+          Přidat pracovníka
         </button>
       </div>
 
-      {/* Filters */}
+      {/* Filtry */}
       <div className="flex gap-4 mb-6">
         <div className="relative flex-1 max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <MagnifyingGlass className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
-            placeholder="Hledat jmeno nebo specializaci..."
+            placeholder="Hledat jméno nebo specializaci…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -62,22 +57,22 @@ export default function WorkersPage() {
           onChange={(e) => setFilterZone(e.target.value)}
           className="px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
-          <option value="all">Vsechny zony</option>
+          <option value="all">Všechny zóny</option>
           {zones.map((z) => (
             <option key={z.id} value={z.id}>{z.name}</option>
           ))}
         </select>
       </div>
 
-      {/* Table */}
+      {/* Tabulka */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <table className="w-full text-sm">
           <thead className="bg-slate-50">
             <tr>
-              <th className="text-left py-3 px-4 font-medium text-slate-500">Jmeno</th>
+              <th className="text-left py-3 px-4 font-medium text-slate-500">Jméno</th>
               <th className="text-left py-3 px-4 font-medium text-slate-500">Specializace</th>
-              <th className="text-left py-3 px-4 font-medium text-slate-500">Zona</th>
-              <th className="text-left py-3 px-4 font-medium text-slate-500">Sablona</th>
+              <th className="text-left py-3 px-4 font-medium text-slate-500">Zóna</th>
+              <th className="text-left py-3 px-4 font-medium text-slate-500">Šablona</th>
               <th className="text-left py-3 px-4 font-medium text-slate-500">Telefon</th>
               <th className="text-left py-3 px-4 font-medium text-slate-500">Status</th>
               <th className="text-left py-3 px-4 font-medium text-slate-500">Akce</th>
@@ -114,19 +109,17 @@ export default function WorkersPage() {
                           : 'bg-slate-100 text-slate-500'
                       }`}
                     >
-                      {w.active ? <CheckCircle className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
-                      {w.active ? 'Aktivni' : 'Neaktivni'}
+                      {w.active ? <CheckCircle className="w-3 h-3" weight="bold" /> : <XCircle className="w-3 h-3" weight="bold" />}
+                      {w.active ? 'Aktivní' : 'Neaktivní'}
                     </button>
                   </td>
                   <td className="py-3 px-4">
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => handleDelete(w.id)}
-                        className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => handleDelete(w.id)}
+                      className="p-1.5 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded"
+                    >
+                      <Trash className="w-4 h-4" />
+                    </button>
                   </td>
                 </tr>
               );

@@ -3,19 +3,19 @@
 import { useState } from 'react';
 import { migrationFieldMappings } from '@/lib/data';
 import { TEMPLATE_LABELS, IndustryTemplate, MigrationFieldMapping } from '@/lib/types';
-import { ArrowRight, Check, AlertTriangle, X, ChevronRight, ArrowRightLeft, FileCheck, Settings, Shield } from 'lucide-react';
+import { ArrowRight, Check, Warning, X, CaretRight, ArrowsLeftRight, FileMagnifyingGlass, GearSix, ShieldCheck } from '@phosphor-icons/react';
 
 const steps = [
-  { id: 1, label: 'Vyber sablony', icon: Settings },
-  { id: 2, label: 'Mapovani poli', icon: ArrowRightLeft },
-  { id: 3, label: 'Reseni konfliktu', icon: AlertTriangle },
-  { id: 4, label: 'Kontrola a podpis', icon: FileCheck },
+  { id: 1, label: 'Výběr šablony', icon: GearSix },
+  { id: 2, label: 'Mapování polí', icon: ArrowsLeftRight },
+  { id: 3, label: 'Řešení konfliktů', icon: Warning },
+  { id: 4, label: 'Kontrola a podpis', icon: FileMagnifyingGlass },
 ];
 
 export default function MigrationPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedTemplate, setSelectedTemplate] = useState<IndustryTemplate | null>(null);
-  const [mappings, setMappings] = useState<MigrationFieldMapping[]>(migrationFieldMappings);
+  const [mappings] = useState<MigrationFieldMapping[]>(migrationFieldMappings);
   const [conflictsResolved, setConflictsResolved] = useState<Record<string, boolean>>({});
   const [signed, setSigned] = useState(false);
 
@@ -32,11 +32,11 @@ export default function MigrationPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-slate-900">Migracni pruvodce</h1>
-        <p className="text-slate-500 mt-1">Automatizovany prevod z v1.0 na v2.0</p>
+        <h1 className="text-3xl font-bold text-slate-900">Migrační průvodce</h1>
+        <p className="text-slate-500 mt-1">Automatizovaný převod z v1.0 na v2.0</p>
       </div>
 
-      {/* Progress Steps */}
+      {/* Kroky postupu */}
       <div className="flex items-center mb-8 bg-white rounded-xl shadow-sm border border-slate-200 p-4">
         {steps.map((step, i) => (
           <div key={step.id} className="flex items-center flex-1">
@@ -46,7 +46,7 @@ export default function MigrationPage() {
                 currentStep === step.id ? 'bg-blue-600 text-white' :
                 'bg-slate-100 text-slate-400'
               }`}>
-                {currentStep > step.id ? <Check className="w-5 h-5" /> : step.id}
+                {currentStep > step.id ? <Check className="w-5 h-5" weight="bold" /> : step.id}
               </div>
               <div>
                 <p className="text-sm font-medium">{step.label}</p>
@@ -59,13 +59,13 @@ export default function MigrationPage() {
         ))}
       </div>
 
-      {/* Step Content */}
+      {/* Obsah kroků */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-8">
-        {/* Step 1: Template Selection */}
+        {/* Krok 1: Výběr šablony */}
         {currentStep === 1 && (
           <div>
-            <h2 className="text-xl font-semibold mb-2">Vyber prumyslove sablony (Blueprint)</h2>
-            <p className="text-slate-500 mb-6">Vyberte sablonu, ktera nejlepe odpovida vasemu oboru. Sablona definuje strukturu dat, casove sloty a validacni pravidla.</p>
+            <h2 className="text-xl font-semibold mb-2">Výběr průmyslové šablony (Blueprint)</h2>
+            <p className="text-slate-500 mb-6">Vyberte šablonu, která nejlépe odpovídá vašemu oboru. Šablona definuje strukturu dat, časové sloty a validační pravidla.</p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {(Object.entries(TEMPLATE_LABELS) as [IndustryTemplate, string][]).map(([key, label]) => (
                 <button
@@ -79,13 +79,13 @@ export default function MigrationPage() {
                 >
                   <h3 className="font-semibold text-lg text-slate-900 mb-2">{label}</h3>
                   <p className="text-sm text-slate-500">
-                    {key === 'ground_construction' && 'Bytova vystavba, komercni budovy, rekonstrukce. Casove sloty: AM/PM/Den.'}
-                    {key === 'transportation' && 'Silnice, mosty, zeleznice. Casove sloty: Den/Noc. Geo-validace tras.'}
-                    {key === 'specialized_trades' && 'Elektro, ZTI, svarovani. Certifikacni kontrola, specializovane sloty.'}
+                    {key === 'ground_construction' && 'Bytová výstavba, komerční budovy, rekonstrukce. Časové sloty: AM/PM/Den.'}
+                    {key === 'transportation' && 'Silnice, mosty, železnice. Časové sloty: Den/Noc. Geo-validace tras.'}
+                    {key === 'specialized_trades' && 'Elektro, ZTI, svařování. Certifikační kontrola, specializované sloty.'}
                   </p>
                   {selectedTemplate === key && (
                     <div className="mt-3 flex items-center gap-1 text-blue-600 text-sm font-medium">
-                      <Check className="w-4 h-4" /> Vybrano
+                      <Check className="w-4 h-4" weight="bold" /> Vybráno
                     </div>
                   )}
                 </button>
@@ -94,11 +94,11 @@ export default function MigrationPage() {
           </div>
         )}
 
-        {/* Step 2: Field Mapping */}
+        {/* Krok 2: Mapování polí */}
         {currentStep === 2 && (
           <div>
-            <h2 className="text-xl font-semibold mb-2">Automaticke mapovani poli</h2>
-            <p className="text-slate-500 mb-6">System automaticky namapoval pole z v1.0 na v2.0. Zkontrolujte mapovani a odsouhlaste.</p>
+            <h2 className="text-xl font-semibold mb-2">Automatické mapování polí</h2>
+            <p className="text-slate-500 mb-6">Systém automaticky namapoval pole z v1.0 na v2.0. Zkontrolujte mapování a odsouhlaste.</p>
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-200">
@@ -122,10 +122,10 @@ export default function MigrationPage() {
                         m.status === 'conflict' ? 'bg-red-100 text-red-700' :
                         'bg-slate-100 text-slate-500'
                       }`}>
-                        {m.status === 'mapped' && <Check className="w-3 h-3" />}
-                        {m.status === 'conflict' && <AlertTriangle className="w-3 h-3" />}
-                        {m.status === 'unmapped' && <X className="w-3 h-3" />}
-                        {m.status === 'mapped' ? 'Namapovano' : m.status === 'conflict' ? 'Konflikt' : 'Nenamapovano'}
+                        {m.status === 'mapped' && <Check className="w-3 h-3" weight="bold" />}
+                        {m.status === 'conflict' && <Warning className="w-3 h-3" weight="fill" />}
+                        {m.status === 'unmapped' && <X className="w-3 h-3" weight="bold" />}
+                        {m.status === 'mapped' ? 'Namapováno' : m.status === 'conflict' ? 'Konflikt' : 'Nenamapováno'}
                       </span>
                     </td>
                   </tr>
@@ -133,18 +133,18 @@ export default function MigrationPage() {
               </tbody>
             </table>
             <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-700">
-              {mappings.filter((m) => m.status === 'mapped').length} poli uspesne namapovano,{' '}
-              {mappings.filter((m) => m.status === 'conflict').length} konfliktu k reseni,{' '}
-              {mappings.filter((m) => m.status === 'unmapped').length} poli zruseno (specialni rezimy).
+              {mappings.filter((m) => m.status === 'mapped').length} polí úspěšně namapováno,{' '}
+              {mappings.filter((m) => m.status === 'conflict').length} konfliktů k řešení,{' '}
+              {mappings.filter((m) => m.status === 'unmapped').length} polí zrušeno (speciální režimy).
             </div>
           </div>
         )}
 
-        {/* Step 3: Conflict Resolution */}
+        {/* Krok 3: Řešení konfliktů */}
         {currentStep === 3 && (
           <div>
-            <h2 className="text-xl font-semibold mb-2">Reseni konfliktu</h2>
-            <p className="text-slate-500 mb-6">Nasledujici datove konflikty vyzaduji manualni opravu pred migraci.</p>
+            <h2 className="text-xl font-semibold mb-2">Řešení konfliktů</h2>
+            <p className="text-slate-500 mb-6">Následující datové konflikty vyžadují manuální opravu před migrací.</p>
             <div className="space-y-4">
               {conflictMappings.map((m) => (
                 <div key={m.v1Field} className={`p-4 rounded-lg border-2 ${
@@ -165,18 +165,18 @@ export default function MigrationPage() {
                           : 'bg-white border border-red-300 text-red-700 hover:bg-red-100'
                       }`}
                     >
-                      {conflictsResolved[m.v1Field] ? 'Vyreseno' : 'Oznacit jako vyreseno'}
+                      {conflictsResolved[m.v1Field] ? 'Vyřešeno' : 'Označit jako vyřešeno'}
                     </button>
                   </div>
                   {m.v1Field === 'hodiny_denne' && !conflictsResolved[m.v1Field] && (
                     <div className="mt-3 p-3 bg-white rounded border border-red-100 text-sm">
-                      <p className="font-medium text-red-700 mb-1">Nalezene chyby (3 zaznamy):</p>
+                      <p className="font-medium text-red-700 mb-1">Nalezené chyby (3 záznamy):</p>
                       <ul className="text-slate-600 space-y-1 list-disc list-inside">
-                        <li>Pracovnik ID-045: 24h/den (2026-01-15) - nerealna smena</li>
-                        <li>Pracovnik ID-112: 20h/den (2026-02-03) - presahuje limit</li>
-                        <li>Pracovnik ID-078: 18h/den (2026-02-20) - presahuje limit</li>
+                        <li>Pracovník ID-045: 24h/den (2026-01-15) – nereálná směna</li>
+                        <li>Pracovník ID-112: 20h/den (2026-02-03) – přesahuje limit</li>
+                        <li>Pracovník ID-078: 18h/den (2026-02-20) – přesahuje limit</li>
                       </ul>
-                      <p className="text-xs text-slate-400 mt-2">Tyto zaznamy budou pri migraci orezany na 16h maximum.</p>
+                      <p className="text-xs text-slate-400 mt-2">Tyto záznamy budou při migraci ořezány na 16h maximum.</p>
                     </div>
                   )}
                 </div>
@@ -185,27 +185,27 @@ export default function MigrationPage() {
           </div>
         )}
 
-        {/* Step 4: Review & Sign-off */}
+        {/* Krok 4: Závěrečná kontrola a podpis */}
         {currentStep === 4 && (
           <div>
-            <h2 className="text-xl font-semibold mb-2">Zaverecna kontrola a podpis</h2>
-            <p className="text-slate-500 mb-6">Zkontrolujte souhrn migrace a potvrdte digitalne.</p>
+            <h2 className="text-xl font-semibold mb-2">Závěrečná kontrola a podpis</h2>
+            <p className="text-slate-500 mb-6">Zkontrolujte souhrn migrace a potvrďte digitálně.</p>
 
             <div className="space-y-4 mb-8">
               <div className="p-4 bg-slate-50 rounded-lg">
-                <p className="text-sm font-medium text-slate-700">Vybrana sablona</p>
-                <p className="text-lg font-semibold text-slate-900">{selectedTemplate ? TEMPLATE_LABELS[selectedTemplate] : '-'}</p>
+                <p className="text-sm font-medium text-slate-700">Vybraná šablona</p>
+                <p className="text-lg font-semibold text-slate-900">{selectedTemplate ? TEMPLATE_LABELS[selectedTemplate] : '–'}</p>
               </div>
               <div className="p-4 bg-slate-50 rounded-lg">
-                <p className="text-sm font-medium text-slate-700">Namapovana pole</p>
+                <p className="text-sm font-medium text-slate-700">Namapovaná pole</p>
                 <p className="text-lg font-semibold text-emerald-600">{mappings.filter((m) => m.status === 'mapped').length} / {mappings.length}</p>
               </div>
               <div className="p-4 bg-slate-50 rounded-lg">
-                <p className="text-sm font-medium text-slate-700">Vyresene konflikty</p>
+                <p className="text-sm font-medium text-slate-700">Vyřešené konflikty</p>
                 <p className="text-lg font-semibold text-emerald-600">{Object.values(conflictsResolved).filter(Boolean).length} / {conflictMappings.length}</p>
               </div>
               <div className="p-4 bg-slate-50 rounded-lg">
-                <p className="text-sm font-medium text-slate-700">Zrusena pole (specialni rezimy)</p>
+                <p className="text-sm font-medium text-slate-700">Zrušená pole (speciální režimy)</p>
                 <p className="text-lg font-semibold text-slate-500">{mappings.filter((m) => m.status === 'unmapped').length}</p>
               </div>
             </div>
@@ -219,10 +219,10 @@ export default function MigrationPage() {
                   className="mt-1 w-5 h-5 rounded border-slate-300 text-blue-600"
                 />
                 <div>
-                  <p className="font-medium text-slate-900">Potvrzuji spravnost dat a souhlasim s migraci</p>
+                  <p className="font-medium text-slate-900">Potvrzuji správnost dat a souhlasím s migrací</p>
                   <p className="text-sm text-slate-500 mt-1">
-                    Potvrzenim pristupujete na migraci dat z v1.0 na v2.0. Data v1.0, ktera neodpovidaji v2.0 schematu,
-                    budou ulozena v legacy_archive (pouze pro cteni). Migrace je nevratna.
+                    Potvrzením přistupujete na migraci dat z v1.0 na v2.0. Data v1.0, která neodpovídají v2.0 schématu,
+                    budou uložena v legacy_archive (pouze pro čtení). Migrace je nevratná.
                   </p>
                 </div>
               </label>
@@ -230,9 +230,9 @@ export default function MigrationPage() {
 
             {signed && (
               <div className="mt-6 p-6 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
-                <Shield className="w-12 h-12 text-emerald-500 mx-auto mb-3" />
-                <h3 className="text-lg font-bold text-emerald-700">Migrace pripravena ke spusteni</h3>
-                <p className="text-sm text-emerald-600 mt-1">Po potvrzeni bude migrace provedena behem 24 hodin.</p>
+                <ShieldCheck className="w-12 h-12 text-emerald-500 mx-auto mb-3" weight="duotone" />
+                <h3 className="text-lg font-bold text-emerald-700">Migrace připravena ke spuštění</h3>
+                <p className="text-sm text-emerald-600 mt-1">Po potvrzení bude migrace provedena během 24 hodin.</p>
                 <button className="mt-4 px-6 py-2.5 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 text-sm font-medium">
                   Spustit migraci
                 </button>
@@ -241,14 +241,14 @@ export default function MigrationPage() {
           </div>
         )}
 
-        {/* Navigation */}
+        {/* Navigace */}
         <div className="flex items-center justify-between mt-8 pt-6 border-t border-slate-200">
           <button
             onClick={() => setCurrentStep((s) => Math.max(1, s - 1))}
             disabled={currentStep === 1}
             className="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Zpet
+            Zpět
           </button>
           {currentStep < 4 && (
             <button
@@ -256,8 +256,8 @@ export default function MigrationPage() {
               disabled={!canProceed()}
               className="flex items-center gap-2 px-6 py-2.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Dalsi krok
-              <ChevronRight className="w-4 h-4" />
+              Další krok
+              <CaretRight className="w-4 h-4" weight="bold" />
             </button>
           )}
         </div>

@@ -17,9 +17,9 @@ export const SLOT_LABELS: Record<TimeSlot, string> = {
 export type IndustryTemplate = 'ground_construction' | 'transportation' | 'specialized_trades';
 
 export const TEMPLATE_LABELS: Record<IndustryTemplate, string> = {
-  ground_construction: 'Pozemni stavby',
-  transportation: 'Dopravni stavby',
-  specialized_trades: 'Specializovane remesla',
+  ground_construction: 'Pozemní stavby',
+  transportation: 'Dopravní stavby',
+  specialized_trades: 'Specializovaná řemesla',
 };
 
 export interface Worker {

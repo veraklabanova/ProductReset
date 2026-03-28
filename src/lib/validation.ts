@@ -1,4 +1,4 @@
-import { Allocation, Conflict, SLOT_HOURS, Worker, Project } from './types';
+import { Allocation, Conflict, SLOT_HOURS } from './types';
 import { projects, zones, workers } from './data';
 
 export function getWorkerHoursOnDate(
@@ -43,7 +43,7 @@ export function validateAllocation(
   if (totalHours > 16) {
     return {
       valid: false,
-      error: `BLOKOVANO: Pracovnik by mel ${totalHours}h za den (limit 16h)`,
+      error: `BLOKOVÁNO: Pracovník by měl ${totalHours}h za den (limit 16h)`,
     };
   }
 
@@ -54,7 +54,6 @@ export function detectConflicts(allocs: Allocation[]): Conflict[] {
   const conflicts: Conflict[] = [];
   const workerDates = new Map<string, Set<string>>();
 
-  // Collect unique worker-date pairs
   for (const a of allocs) {
     const key = a.workerId;
     if (!workerDates.has(key)) workerDates.set(key, new Set());
@@ -66,7 +65,6 @@ export function detectConflicts(allocs: Allocation[]): Conflict[] {
     if (!worker) continue;
 
     for (const date of dates) {
-      // Check overcapacity
       const hours = getWorkerHoursOnDate(allocs, workerId, date);
       if (hours > 16) {
         conflicts.push({
@@ -78,7 +76,6 @@ export function detectConflicts(allocs: Allocation[]): Conflict[] {
         });
       }
 
-      // Check zone conflicts
       const zoneIds = getWorkerZonesOnDate(allocs, workerId, date);
       if (zoneIds.length > 1) {
         const zoneNames = zoneIds
@@ -88,7 +85,7 @@ export function detectConflicts(allocs: Allocation[]): Conflict[] {
           type: 'zone',
           workerId,
           date,
-          details: `${worker.name}: Prirazen do ${zoneNames.join(', ')}`,
+          details: `${worker.name}: Přiřazen do ${zoneNames.join(', ')}`,
           zones: zoneIds,
         });
       }
@@ -98,22 +95,7 @@ export function detectConflicts(allocs: Allocation[]): Conflict[] {
   return conflicts;
 }
 
-export function getDateRange(startDate: Date, days: number): string[] {
-  const result: string[] = [];
-  for (let i = 0; i < days; i++) {
-    const d = new Date(startDate);
-    d.setDate(d.getDate() + i);
-    result.push(d.toISOString().split('T')[0]);
-  }
-  return result;
-}
-
 export function formatDate(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('cs-CZ', { weekday: 'short', day: 'numeric', month: 'numeric' });
-}
-
-export function getDayName(dateStr: string): string {
-  const d = new Date(dateStr + 'T00:00:00');
-  return d.toLocaleDateString('cs-CZ', { weekday: 'long' });
 }
